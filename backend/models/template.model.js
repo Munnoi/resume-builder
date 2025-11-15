@@ -2,7 +2,8 @@ import mongoose from "mongoose";
 
 const templateSchema = new mongoose.Schema({
     authorName: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
         required: true
     },
     templateName: {
@@ -29,4 +30,4 @@ const templateSchema = new mongoose.Schema({
     timestamps: true
 });
 
-export default mongoose.model("template", templateSchema);
+export default mongoose.model("Template", templateSchema);
