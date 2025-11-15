@@ -1,4 +1,3 @@
-// User model
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
@@ -25,12 +24,10 @@ const userSchema = new mongoose.Schema(
     },
     bio: {
       type: String,
-      required: false,
     },
     avatar: {
       // url of image
       type: String,
-      required: false,
     },
   },
   {
