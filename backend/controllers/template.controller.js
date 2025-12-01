@@ -1,108 +1,93 @@
-import Template from "../models/template.model.js";
-
-export const createTemplate = async (req, res) => {
-    try {
-        const { templateName, description, imgPreviewUrl, html, css } = req.body;
-
-        const template = await Template.create({
-            author: req.user.id, // comes from auth middleware
-            templateName,
-            description,
-            imgPreviewUrl,
-            html,
-            css
-        });
-
-        res.status(201).json({
-            message: "Template created successfully",
-            template
-        });
-
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
-
+// Template controller with predefined templates
+const templates = [
+  {
+    id: "modern",
+    name: "Modern Professional",
+    description: "Clean and modern design perfect for tech and creative industries",
+    preview: "/templates/modern.png",
+    category: "professional",
+  },
+  {
+    id: "classic",
+    name: "Classic Elegant",
+    description: "Traditional format suitable for corporate and formal positions",
+    preview: "/templates/classic.png",
+    category: "traditional",
+  },
+  {
+    id: "creative",
+    name: "Creative Bold",
+    description: "Eye-catching design for creative professionals and designers",
+    preview: "/templates/creative.png",
+    category: "creative",
+  },
+  {
+    id: "minimal",
+    name: "Minimal Clean",
+    description: "Simple and clean layout focusing on content",
+    preview: "/templates/minimal.png",
+    category: "minimal",
+  },
+];
 
 export const getAllTemplates = async (req, res) => {
-    try {
-        const templates = await Template.find().populate("author", "fullName email"); // replaces the author with actual author doc (_id, fullName, email)
-
-        res.json({
-            count: templates.length,
-            templates
-        });
-
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+  try {
+    res.status(200).json({
+      success: true,
+      count: templates.length,
+      templates,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch templates",
+      error: error.message,
+    });
+  }
 };
-
 
 export const getTemplateById = async (req, res) => {
-    try {
-        const template = await Template.findById(req.params.id).populate("author");
+  try {
+    const template = templates.find((t) => t.id === req.params.id);
 
-        if (!template) {
-            return res.status(404).json({ message: "Template not found" });
-        }
-
-        res.json(template);
-
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+    if (!template) {
+      return res.status(404).json({
+        success: false,
+        message: "Template not found",
+      });
     }
+
+    res.status(200).json({
+      success: true,
+      template,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch template",
+      error: error.message,
+    });
+  }
 };
 
+// Placeholder functions for future admin functionality
+export const createTemplate = async (req, res) => {
+  res.status(501).json({
+    success: false,
+    message: "Template creation not yet implemented",
+  });
+};
 
 export const updateTemplate = async (req, res) => {
-    try {
-        const template = await Template.findById(req.params.id);
-
-        if (!template) {
-            return res.status(404).json({ message: "Template not found" });
-        }
-
-        // only the author can update
-        if (template.author.toString() !== req.user.id) {
-            return res.status(403).json({ message: "Not authorized" });
-        }
-
-        const updated = await Template.findByIdAndUpdate(
-            req.params.id,
-            req.body,
-            { new: true }
-        );
-
-        res.json({
-            message: "Template updated successfully",
-            updated
-        });
-
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+  res.status(501).json({
+    success: false,
+    message: "Template update not yet implemented",
+  });
 };
 
-
 export const deleteTemplate = async (req, res) => {
-    try {
-        const template = await Template.findById(req.params.id);
-
-        if (!template) {
-            return res.status(404).json({ message: "Template not found" });
-        }
-
-        // only the author can delete
-        if (template.author.toString() !== req.user.id) {
-            return res.status(403).json({ message: "Not authorized" });
-        }
-
-        await template.deleteOne();
-
-        res.json({ message: "Template deleted successfully" });
-
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+  res.status(501).json({
+    success: false,
+    message: "Template deletion not yet implemented",
+  });
 };

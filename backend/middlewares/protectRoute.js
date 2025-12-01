@@ -9,7 +9,7 @@ export const ProtectRoute = (req, res, next) => {
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET); // decoding the token
 
-        req.user = decoded; // contains user id
+        req.user = { ...decoded, _id: decoded.id }; // contains user id, mapped to _id for consistency
         next(); // req is passed to the next middleware
 
     } catch (err) {

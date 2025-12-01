@@ -1,64 +1,317 @@
-
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Box, Typography, Button, Paper, CircularProgress } from "@mui/material";
+import { getAllTemplates } from "../services/api";
+import { useResume } from "../context/ResumeContext";
 
 const Templates = () => {
+  const navigate = useNavigate();
+  const { setResumeData, resumeData } = useResume();
+  const [templates, setTemplates] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadTemplates();
+  }, []);
+
+  const loadTemplates = async () => {
+    try {
+      const response = await getAllTemplates();
+      setTemplates(response.templates);
+    } catch (error) {
+      console.error("Failed to load templates:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSelectTemplate = (templateId: string) => {
+    setResumeData({ ...resumeData, templateId });
+    navigate("/builder");
+  };
+
+  if (loading) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   return (
-    <div className="pt-32 pb-20 min-h-screen bg-surface-alt relative overflow-hidden">
-       {/* Background Blobs for Glassmorphism effect */}
-       <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
-        <div className="absolute top-[10%] left-[5%] w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px]"></div>
-        <div className="absolute bottom-[10%] right-[5%] w-[500px] h-[500px] bg-accent/5 rounded-full blur-[120px]"></div>
-      </div>
+    <Box
+      sx={{
+        pt: 12,
+        pb: 8,
+        minHeight: "100vh",
+        backgroundColor: "#f8fafc",
+        position: "relative",
+        overflow: "hidden",
+      }}>
+      {/* Background Blobs */}
+      <Box
+        sx={{
+          position: "absolute",
+          top: "10%",
+          left: "5%",
+          width: 500,
+          height: 500,
+          backgroundColor: "primary.main",
+          opacity: 0.05,
+          borderRadius: "50%",
+          filter: "blur(120px)",
+          pointerEvents: "none",
+        }}
+      />
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="text-center mb-16">
-          <h1 className="text-4xl font-semibold text-text-main mb-4 tracking-tight">Professional Templates</h1>
-          <p className="text-text-muted max-w-2xl mx-auto font-light">
-            Choose from our collection of ATS-friendly templates designed to help you land your dream job.
-          </p>
-        </div>
-        
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4 md:px-0">
-          {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
-            <div key={item} className="group relative glass rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
-              <div className="aspect-[1/1.4] bg-white/50 relative overflow-hidden group-hover:bg-white/80 transition-colors">
-                {/* Abstract Resume Preview - Non-copyrighted */}
-                <div className="w-full h-full p-4 flex flex-col gap-2 opacity-60 group-hover:opacity-80 transition-opacity transform scale-90 group-hover:scale-95 duration-500">
-                   <div className="flex gap-2 items-center mb-2">
-                     <div className="w-8 h-8 rounded-full bg-gray-200"></div>
-                     <div className="space-y-1">
-                       <div className="w-16 h-2 bg-gray-300 rounded-full"></div>
-                       <div className="w-10 h-1.5 bg-gray-200 rounded-full"></div>
-                     </div>
-                   </div>
-                   <div className="w-full h-1.5 bg-gray-200 rounded-full mb-1"></div>
-                   <div className="flex gap-2 h-full">
-                      <div className="w-1/3 h-full bg-gray-100 rounded-lg"></div>
-                      <div className="w-2/3 h-full space-y-2">
-                        <div className="w-full h-2 bg-gray-200 rounded-full"></div>
-                        <div className="w-5/6 h-2 bg-gray-200 rounded-full"></div>
-                        <div className="w-full h-2 bg-gray-200 rounded-full"></div>
-                        <div className="w-4/5 h-2 bg-gray-200 rounded-full"></div>
-                        <div className="mt-4 w-full h-2 bg-gray-200 rounded-full"></div>
-                        <div className="w-3/4 h-2 bg-gray-200 rounded-full"></div>
-                      </div>
-                   </div>
-                </div>
+      <Box
+        sx={{
+          position: "absolute",
+          bottom: "10%",
+          right: "5%",
+          width: 500,
+          height: 500,
+          backgroundColor: "secondary.main",
+          opacity: 0.05,
+          borderRadius: "50%",
+          filter: "blur(120px)",
+          pointerEvents: "none",
+        }}
+      />
 
-                <div className="absolute inset-0 bg-gradient-to-t from-white/90 via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-6">
-                  <button className="px-5 py-2 bg-primary/90 backdrop-blur-sm text-white rounded-full text-sm font-medium hover:bg-primary transition-colors shadow-lg transform translate-y-4 group-hover:translate-y-0 duration-300">
+      <Box
+        sx={{
+          maxWidth: "1280px",
+          mx: "auto",
+          px: 3,
+          position: "relative",
+          zIndex: 10,
+        }}>
+        {/* Heading */}
+        <Box sx={{ textAlign: "center", mb: 8 }}>
+          <Typography
+            sx={{
+              fontSize: { xs: "2rem", md: "2.5rem" },
+              fontWeight: 600,
+              color: "text.primary",
+              mb: 1,
+            }}>
+            Professional Templates
+          </Typography>
+
+          <Typography
+            sx={{
+              maxWidth: 600,
+              mx: "auto",
+              color: "text.secondary",
+              fontWeight: 300,
+            }}>
+            Choose from our collection of ATS-friendly templates designed to
+            help you land your dream job.
+          </Typography>
+        </Box>
+
+        {/* Template Grid */}
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: {
+              xs: "1fr",
+              sm: "repeat(2, 1fr)",
+              md: "repeat(3, 1fr)",
+              lg: "repeat(4, 1fr)",
+            },
+            gap: 3,
+            px: { xs: 2, md: 0 },
+          }}>
+          {templates.map((template) => (
+            <Paper
+              key={template.id}
+              elevation={1}
+              sx={{
+                position: "relative",
+                borderRadius: 3,
+                overflow: "hidden",
+                backdropFilter: "blur(10px)",
+                backgroundColor: "rgba(255,255,255,0.4)",
+                boxShadow: "0 3px 10px rgba(0,0,0,0.07)",
+                transition: "0.5s",
+                "&:hover": {
+                  transform: "translateY(-4px)",
+                  boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+                },
+              }}>
+              {/* Preview Box */}
+              <Box
+                sx={{
+                  position: "relative",
+                  aspectRatio: "1 / 1.4",
+                  backgroundColor: "rgba(255,255,255,0.5)",
+                  transition: "0.3s",
+                  "&:hover": { backgroundColor: "rgba(255,255,255,0.8)" },
+                }}>
+                {/* Fake Resume Preview */}
+                <Box
+                  sx={{
+                    width: "100%",
+                    height: "100%",
+                    p: 2,
+                    opacity: 0.6,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 1,
+                    transition: "0.5s",
+                    transform: "scale(0.9)",
+                    "&:hover": {
+                      opacity: 0.8,
+                      transform: "scale(0.95)",
+                    },
+                  }}>
+                  {/* Top profile bar */}
+                  <Box
+                    sx={{
+                      display: "flex",
+                      gap: 1,
+                      alignItems: "center",
+                      mb: 1,
+                    }}>
+                    <Box
+                      sx={{
+                        width: 32,
+                        height: 32,
+                        borderRadius: "50%",
+                        backgroundColor: "#e2e8f0",
+                      }}
+                    />
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "4px",
+                      }}>
+                      <Box
+                        sx={{
+                          width: 64,
+                          height: 8,
+                          borderRadius: 2,
+                          backgroundColor: "#cbd5e1",
+                        }}
+                      />
+                      <Box
+                        sx={{
+                          width: 40,
+                          height: 6,
+                          borderRadius: 2,
+                          backgroundColor: "#e2e8f0",
+                        }}
+                      />
+                    </Box>
+                  </Box>
+
+                  {/* Divider */}
+                  <Box
+                    sx={{
+                      width: "100%",
+                      height: 6,
+                      borderRadius: 2,
+                      backgroundColor: "#e2e8f0",
+                      mb: 1,
+                    }}
+                  />
+
+                  {/* Body section */}
+                  <Box sx={{ display: "flex", gap: 1, height: "100%" }}>
+                    <Box
+                      sx={{
+                        width: "33%",
+                        backgroundColor: "#f1f5f9",
+                        borderRadius: 2,
+                      }}
+                    />
+
+                    <Box
+                      sx={{
+                        width: "67%",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "6px",
+                      }}>
+                      {[100, 85, 100, 80, 100, 70].map((width, idx) => (
+                        <Box
+                          key={idx}
+                          sx={{
+                            width: `${width}%`,
+                            height: 8,
+                            backgroundColor: "#e2e8f0",
+                            borderRadius: 2,
+                            mt: idx === 4 ? 2 : 0,
+                          }}
+                        />
+                      ))}
+                    </Box>
+                  </Box>
+                </Box>
+
+                {/* Hover Action Button */}
+                <Box
+                  sx={{
+                    position: "absolute",
+                    inset: 0,
+                    background:
+                      "linear-gradient(to top, rgba(255,255,255,0.9), rgba(255,255,255,0.2), transparent)",
+                    opacity: 0,
+                    transition: "0.3s",
+                    display: "flex",
+                    alignItems: "flex-end",
+                    justifyContent: "center",
+                    pb: 3,
+                    "&:hover": { opacity: 1 },
+                  }}>
+                  <Button
+                    onClick={() => handleSelectTemplate(template.id)}
+                    sx={{
+                      px: 3,
+                      py: 1,
+                      backgroundColor: "primary.main",
+                      color: "#fff",
+                      backdropFilter: "blur(4px)",
+                      borderRadius: 5,
+                      fontSize: "0.875rem",
+                      fontWeight: 500,
+                      boxShadow: "0 4px 14px rgba(0,0,0,0.15)",
+                      transition: "0.3s",
+                      "&:hover": { backgroundColor: "primary.dark" },
+                    }}>
                     Use Template
-                  </button>
-                </div>
-              </div>
-              <div className="p-4 border-t border-white/20">
-                <h3 className="font-medium text-text-main text-sm">Modern Professional {item}</h3>
-                <p className="text-xs text-text-muted font-light mt-1">Clean & Minimal</p>
-              </div>
-            </div>
+                  </Button>
+                </Box>
+              </Box>
+
+              {/* Caption */}
+              <Box sx={{ p: 2, borderTop: "1px solid rgba(255,255,255,0.25)" }}>
+                <Typography
+                  sx={{
+                    fontWeight: 500,
+                    fontSize: "0.9rem",
+                    color: "text.primary",
+                  }}>
+                  {template.name}
+                </Typography>
+
+                <Typography
+                  sx={{
+                    fontSize: "0.75rem",
+                    color: "text.secondary",
+                    mt: 0.5,
+                  }}>
+                  {template.description}
+                </Typography>
+              </Box>
+            </Paper>
           ))}
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

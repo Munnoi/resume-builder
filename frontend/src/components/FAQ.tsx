@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Box, Typography, Paper } from "@mui/material";
 
 type FAQItem = {
   question: string;
@@ -31,56 +32,118 @@ const FAQ: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section id="faq" className="py-24 bg-white relative overflow-hidden">
-      {/* Soft blobs */}
-      <div className="absolute top-16 right-16 w-40 h-40 bg-primary/10 blur-3xl rounded-full animate-pulse-slow"></div>
+    <Box
+      id="faq"
+      sx={{
+        py: 12,
+        backgroundColor: "#f8fafc",
+        position: "relative",
+        overflow: "hidden",
+      }}>
+      {/* Soft blob */}
+      <Box
+        sx={{
+          position: "absolute",
+          top: 64,
+          right: 64,
+          width: 160,
+          height: 160,
+          backgroundColor: "primary.main",
+          opacity: 0.1,
+          borderRadius: "50%",
+          filter: "blur(50px)",
+          animation: "pulseSlow 4s infinite",
+        }}
+      />
 
-      <div className="max-w-4xl mx-auto px-6">
-        <h2 className="text-3xl md:text-4xl font-bold text-text-main text-center mb-12 animate-slide-up">
+      <Box sx={{ maxWidth: "800px", mx: "auto", px: 3 }}>
+        <Typography
+          sx={{
+            fontSize: { xs: "2rem", md: "2.5rem" },
+            fontWeight: 700,
+            textAlign: "center",
+            mb: 6,
+            color: "text.primary",
+            animation: "slideUp 0.6s ease both",
+          }}>
           Frequently Asked Questions
-        </h2>
+        </Typography>
 
-        <div className="space-y-4">
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
           {faqs.map((faq, index) => {
             const isOpen = openIndex === index;
 
             return (
-              <div
+              <Paper
                 key={index}
-                className="border border-gray-200 rounded-xl p-5 bg-white shadow-sm hover:shadow-md transition-all cursor-pointer group"
+                elevation={1}
                 onClick={() => setOpenIndex(isOpen ? null : index)}
-              >
-                {/* Question Row */}
-                <div className="flex justify-between items-center">
-                  <h3 className="text-lg font-semibold text-text-main group-hover:text-primary transition-colors">
+                sx={{
+                  p: 3,
+                  borderRadius: 3,
+                  border: "1px solid #e5e7eb",
+                  backgroundColor: "#fff",
+                  cursor: "pointer",
+                  transition: "0.3s",
+                  "&:hover": {
+                    boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
+                  },
+                }}>
+                {/* Question row */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}>
+                  <Typography
+                    sx={{
+                      fontSize: "1.125rem",
+                      fontWeight: 600,
+                      color: "text.primary",
+                      transition: "0.25s",
+                      "&:hover": {
+                        color: "primary.main",
+                      },
+                    }}>
                     {faq.question}
-                  </h3>
+                  </Typography>
 
-                  <span
-                    className={`w-6 h-6 flex items-center justify-center rounded-full text-primary transition-transform ${
-                      isOpen ? "rotate-180" : ""
-                    }`}
-                  >
+                  <Box
+                    sx={{
+                      width: 24,
+                      height: 24,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "primary.main",
+                      transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
+                      transition: "0.3s",
+                      fontSize: "1rem",
+                    }}>
                     ▼
-                  </span>
-                </div>
+                  </Box>
+                </Box>
 
                 {/* Answer */}
-                <div
-                  className={`overflow-hidden transition-all duration-300 ${
-                    isOpen ? "max-h-40 mt-3 opacity-100" : "max-h-0 opacity-0"
-                  }`}
-                >
-                  <p className="text-text-muted leading-relaxed">
+                <Box
+                  sx={{
+                    maxHeight: isOpen ? 200 : 0,
+                    opacity: isOpen ? 1 : 0,
+                    mt: isOpen ? 1 : 0,
+                    overflow: "hidden",
+                    transition: "all 0.3s ease",
+                  }}>
+                  <Typography sx={{ color: "text.secondary", lineHeight: 1.7 }}>
                     {faq.answer}
-                  </p>
-                </div>
-              </div>
+                  </Typography>
+                </Box>
+              </Paper>
             );
           })}
-        </div>
-      </div>
-    </section>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

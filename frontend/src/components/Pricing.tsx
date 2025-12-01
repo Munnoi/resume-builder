@@ -1,119 +1,369 @@
 import React from "react";
+import { Box, Grid, Typography, Paper, Button } from "@mui/material";
 
 const Pricing: React.FC = () => {
   return (
-    <section id="pricing" className="py-24 bg-surface-alt relative overflow-hidden">
-      {/* Floating playful blobs */}
-      <div className="absolute top-10 left-10 w-40 h-40 bg-primary/10 rounded-full blur-3xl animate-pulse-slow"></div>
-      <div className="absolute bottom-10 right-20 w-52 h-52 bg-blue-400/10 rounded-full blur-3xl animate-pulse-slower"></div>
+    <Box
+      id="pricing"
+      sx={{
+        py: 12,
+        backgroundColor: "background.default",
+        position: "relative",
+        overflow: "hidden",
+      }}>
+      {/* Floating blobs */}
+      <Box
+        sx={{
+          position: "absolute",
+          top: 40,
+          left: 40,
+          width: 160,
+          height: 160,
+          backgroundColor: "primary.main",
+          opacity: 0.1,
+          borderRadius: "50%",
+          filter: "blur(60px)",
+          animation: "pulseSlow 4s infinite",
+        }}
+      />
 
-      <div className="max-w-7xl mx-auto px-6 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold text-text-main mb-4 animate-slide-up">
+      <Box
+        sx={{
+          position: "absolute",
+          bottom: 40,
+          right: 80,
+          width: 200,
+          height: 200,
+          backgroundColor: "#60a5fa",
+          opacity: 0.1,
+          borderRadius: "50%",
+          filter: "blur(70px)",
+          animation: "pulseSlower 6s infinite",
+        }}
+      />
+
+      <Box sx={{ maxWidth: "1280px", mx: "auto", px: 3, textAlign: "center" }}>
+        {/* Title */}
+        <Typography
+          sx={{
+            fontSize: { xs: "2rem", md: "2.5rem" },
+            fontWeight: 700,
+            mb: 2,
+            color: "text.primary",
+            animation: "slideUp 0.6s ease both",
+          }}>
           Simple, Transparent Pricing
-        </h2>
+        </Typography>
 
-        <p className="text-lg text-text-muted max-w-2xl mx-auto mb-16 animate-slide-up animation-delay-150">
+        <Typography
+          sx={{
+            fontSize: "1.125rem",
+            color: "text.secondary",
+            maxWidth: "600px",
+            mx: "auto",
+            mb: 10,
+            animation: "slideUp 0.8s ease both",
+          }}>
           No hidden fees. No paywalls. Everything you need, completely free and
           open source.
-        </p>
+        </Typography>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        {/* Grid: 1 → 2 → 3 columns */}
+        <Grid
+          container
+          spacing={5}
+          sx={{
+            display: "grid",
+            gridTemplateColumns: {
+              xs: "1fr",
+              md: "1fr 1fr",
+              lg: "repeat(3, 1fr)",
+            },
+          }}>
           {/* Free Plan */}
-          <div className="relative bg-white p-10 rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all group hover:-translate-y-2 hover:rotate-[0.5deg]">
-            {/* Highlight shimmer */}
-            <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-500 pointer-events-none" />
+          <Box>
+            <Paper
+              elevation={0}
+              sx={{
+                position: "relative",
+                p: 6,
+                borderRadius: 4,
+                backgroundColor: "#fff",
+                border: "1px solid #e5e7eb",
+                transition: "0.35s",
+                cursor: "pointer",
+                "&:hover": {
+                  transform: "translateY(-8px) rotate(0.5deg)",
+                  boxShadow: "0 16px 40px rgba(0,0,0,0.1)",
+                },
+                "&:hover .shimmer": { opacity: 1 },
+              }}>
+              {/* Shimmer */}
+              <Box
+                className="shimmer"
+                sx={{
+                  position: "absolute",
+                  inset: 0,
+                  background:
+                    "linear-gradient(135deg, transparent, rgba(255,255,255,0.25), transparent)",
+                  opacity: 0,
+                  transition: "0.45s",
+                  borderRadius: 4,
+                }}
+              />
 
-            <h3 className="text-xl font-semibold text-text-main mb-4">Free</h3>
+              <Typography
+                sx={{
+                  fontSize: "1.25rem",
+                  fontWeight: 600,
+                  color: "text.primary",
+                  mb: 2,
+                }}>
+                Free
+              </Typography>
 
-            <p className="text-5xl font-bold text-primary mb-2">0$</p>
-            <p className="text-text-muted mb-8">Forever free. No limits.</p>
+              <Typography
+                sx={{
+                  fontSize: "3rem",
+                  fontWeight: 700,
+                  color: "primary.main",
+                  mb: 1,
+                }}>
+                0$
+              </Typography>
 
-            <ul className="space-y-3 text-left mb-10">
-              <li className="flex items-center gap-2 text-text-main">
-                ✔️ Unlimited resumes
-              </li>
-              <li className="flex items-center gap-2 text-text-main">
-                ✔️ All templates included
-              </li>
-              <li className="flex items-center gap-2 text-text-main">
-                ✔️ Instant PDF export
-              </li>
-              <li className="flex items-center gap-2 text-text-main">
-                ✔️ Full ATS compatibility
-              </li>
-            </ul>
+              <Typography sx={{ color: "text.secondary", mb: 4 }}>
+                Forever free. No limits.
+              </Typography>
 
-            <button className="w-full py-3 bg-primary text-white rounded-xl font-medium hover:bg-primary-hover transition-all shadow-primary/20 shadow-lg hover:shadow-primary/40">
-              Get Started
-            </button>
-          </div>
+              <Box sx={{ mb: 6 }}>
+                {[
+                  "Unlimited resumes",
+                  "All templates included",
+                  "Instant PDF export",
+                  "Full ATS compatibility",
+                ].map((text) => (
+                  <Typography
+                    key={text}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1,
+                      mb: 1,
+                      color: "text.primary",
+                    }}>
+                    ✔️ {text}
+                  </Typography>
+                ))}
+              </Box>
+
+              <Button
+                fullWidth
+                sx={{
+                  py: 1.5,
+                  backgroundColor: "primary.main",
+                  color: "#fff",
+                  fontWeight: 600,
+                  borderRadius: 2,
+                  boxShadow: (theme) =>
+                    `0px 6px 16px ${theme.palette.primary.main}33`,
+                  transition: "0.3s",
+                  "&:hover": {
+                    backgroundColor: "primary.dark",
+                    boxShadow: (theme) =>
+                      `0px 8px 20px ${theme.palette.primary.main}55`,
+                  },
+                }}>
+                Get Started
+              </Button>
+            </Paper>
+          </Box>
 
           {/* Open Source Plan */}
-          <div className="relative bg-white p-10 rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all group hover:-translate-y-2 hover:rotate-[0.5deg]">
-            <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-500" />
+          <Box>
+            <Paper
+              elevation={0}
+              sx={{
+                position: "relative",
+                p: 6,
+                borderRadius: 4,
+                backgroundColor: "#fff",
+                border: "1px solid #e5e7eb",
+                transition: "0.35s",
+                cursor: "pointer",
+                "&:hover": {
+                  transform: "translateY(-8px) rotate(0.5deg)",
+                  boxShadow: "0 16px 40px rgba(0,0,0,0.1)",
+                },
+                "&:hover .shimmer": { opacity: 1 },
+              }}>
+              <Box
+                className="shimmer"
+                sx={{
+                  position: "absolute",
+                  inset: 0,
+                  background:
+                    "linear-gradient(135deg, transparent, rgba(255,255,255,0.25), transparent)",
+                  opacity: 0,
+                  transition: "0.45s",
+                  borderRadius: 4,
+                }}
+              />
 
-            <h3 className="text-xl font-semibold text-text-main mb-4">
-              Open Source
-            </h3>
+              <Typography
+                sx={{
+                  fontSize: "1.25rem",
+                  fontWeight: 600,
+                  color: "text.primary",
+                  mb: 2,
+                }}>
+                Open Source
+              </Typography>
 
-            <p className="text-5xl font-bold text-primary mb-2">Free</p>
-            <p className="text-text-muted mb-8">Clone, modify, contribute.</p>
+              <Typography
+                sx={{
+                  fontSize: "3rem",
+                  fontWeight: 700,
+                  color: "primary.main",
+                  mb: 1,
+                }}>
+                Free
+              </Typography>
 
-            <ul className="space-y-3 text-left mb-10">
-              <li className="flex items-center gap-2 text-text-main">
-                ✔️ MIT License
-              </li>
-              <li className="flex items-center gap-2 text-text-main">
-                ✔️ Custom template creation
-              </li>
-              <li className="flex items-center gap-2 text-text-main">
-                ✔️ Full code access
-              </li>
-              <li className="flex items-center gap-2 text-text-main">
-                ✔️ Community-driven
-              </li>
-            </ul>
+              <Typography sx={{ color: "text.secondary", mb: 4 }}>
+                Clone, modify, contribute.
+              </Typography>
 
-            <a
-              href="https://github.com/Munnoi/resume-builder"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full block py-3 border border-primary text-primary rounded-xl font-medium hover:bg-primary/10 transition-all"
-            >
-              View on GitHub
-            </a>
-          </div>
+              <Box sx={{ mb: 6 }}>
+                {[
+                  "MIT License",
+                  "Custom template creation",
+                  "Full code access",
+                  "Community-driven",
+                ].map((text) => (
+                  <Typography
+                    key={text}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1,
+                      mb: 1,
+                      color: "text.primary",
+                    }}>
+                    ✔️ {text}
+                  </Typography>
+                ))}
+              </Box>
 
-          {/* Premium-looking Free Plan (for fun) */}
-          <div className="relative bg-gradient-to-br from-primary to-blue-600 p-10 rounded-2xl text-white shadow-xl hover:shadow-2xl transition-all group hover:-translate-y-2 hover:rotate-[0.5deg]">
-            {/* Glow */}
-            <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-20 transition duration-500 rounded-2xl" />
+              <Button
+                href="https://github.com/Munnoi/resume-builder"
+                target="_blank"
+                fullWidth
+                sx={{
+                  py: 1.5,
+                  border: "2px solid",
+                  borderColor: "primary.main",
+                  color: "primary.main",
+                  fontWeight: 600,
+                  borderRadius: 2,
+                  "&:hover": {
+                    backgroundColor: "primary.light",
+                  },
+                }}>
+                View on GitHub
+              </Button>
+            </Paper>
+          </Box>
 
-            <span className="absolute top-4 right-4 bg-white/20 text-white px-3 py-1 rounded-full text-xs font-medium backdrop-blur-md">
-              Popular
-            </span>
+          {/* AI Assisted Plan */}
+          <Box>
+            <Paper
+              elevation={0}
+              sx={{
+                p: 6,
+                borderRadius: 4,
+                color: "#fff",
+                background: "linear-gradient(135deg, #3b82f6, #2563eb)",
+                position: "relative",
+                transition: "0.35s",
+                cursor: "pointer",
+                overflow: "hidden",
+                "&:hover": {
+                  transform: "translateY(-8px) rotate(0.5deg)",
+                  boxShadow: "0 20px 40px rgba(0,0,0,0.25)",
+                },
+              }}>
+              {/* Glow */}
+              <Box
+                sx={{
+                  position: "absolute",
+                  inset: 0,
+                  backgroundColor: "rgba(255,255,255,0.1)",
+                  opacity: 0,
+                  borderRadius: 4,
+                  transition: "0.4s",
+                  "&:hover": { opacity: 0.2 },
+                }}
+              />
 
-            <h3 className="text-xl font-semibold mb-4">AI Assisted</h3>
-            <p className="text-5xl font-bold mb-2">Free</p>
-            <p className="opacity-90 mb-8">AI features included.</p>
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: 16,
+                  right: 16,
+                  backgroundColor: "rgba(255,255,255,0.25)",
+                  px: 2,
+                  py: 0.5,
+                  fontSize: "0.75rem",
+                  borderRadius: 20,
+                  backdropFilter: "blur(6px)",
+                }}>
+                Popular
+              </Box>
 
-            <ul className="space-y-3 text-left mb-10 opacity-95">
-              <li>✨ Bullet point generator</li>
-              <li>✨ Resume enhancer</li>
-              <li>✨ Skills extractor</li>
-              <li>✨ Tailored ATS improvements</li>
-            </ul>
+              <Typography sx={{ fontSize: "1.25rem", fontWeight: 600, mb: 2 }}>
+                AI Assisted
+              </Typography>
 
-            <a
-              href="/builder"
-              className="w-full block py-3 bg-white text-primary font-semibold rounded-xl hover:bg-gray-100 transition-all"
-            >
-              Use AI Tools
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
+              <Typography sx={{ fontSize: "3rem", fontWeight: 700, mb: 1 }}>
+                Free
+              </Typography>
+
+              <Typography sx={{ opacity: 0.9, mb: 4 }}>
+                AI features included.
+              </Typography>
+
+              <Box sx={{ mb: 6, opacity: 0.95, textAlign: "left" }}>
+                {[
+                  "✨ Bullet point generator",
+                  "✨ Resume enhancer",
+                  "✨ Skills extractor",
+                  "✨ Tailored ATS improvements",
+                ].map((text) => (
+                  <Typography key={text} sx={{ mb: 1 }}>
+                    {text}
+                  </Typography>
+                ))}
+              </Box>
+
+              <Button
+                href="/builder"
+                fullWidth
+                sx={{
+                  py: 1.5,
+                  backgroundColor: "#fff",
+                  color: "primary.main",
+                  fontWeight: 600,
+                  borderRadius: 2,
+                  "&:hover": { backgroundColor: "#f1f5f9" },
+                }}>
+                Use AI Tools
+              </Button>
+            </Paper>
+          </Box>
+        </Grid>
+      </Box>
+    </Box>
   );
 };
 

@@ -1,4 +1,5 @@
 import React from "react";
+import { Box, Grid, Paper, Typography } from "@mui/material";
 
 type FeatureItem = {
   title: string;
@@ -18,8 +19,7 @@ const features: FeatureItem[] = [
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="w-6 h-6"
-      >
+        style={{ width: 24, height: 24 }}>
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -44,8 +44,7 @@ const features: FeatureItem[] = [
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="w-6 h-6"
-      >
+        style={{ width: 24, height: 24 }}>
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -65,8 +64,7 @@ const features: FeatureItem[] = [
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="w-6 h-6"
-      >
+        style={{ width: 24, height: 24 }}>
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -86,8 +84,7 @@ const features: FeatureItem[] = [
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="w-6 h-6"
-      >
+        style={{ width: 24, height: 24 }}>
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -100,59 +97,152 @@ const features: FeatureItem[] = [
 
 const Features: React.FC = () => {
   return (
-    <section
+    <Box
       id="features"
-      className="py-24 bg-surface-alt relative overflow-hidden"
-    >
-      {/* playful background blobs */}
-      <div className="absolute top-10 right-10 w-24 h-24 bg-primary/10 rounded-full blur-3xl animate-pulse-slow"></div>
-      <div className="absolute bottom-10 left-20 w-32 h-32 bg-blue-400/10 rounded-full blur-3xl animate-pulse-slower"></div>
+      sx={{
+        py: 12,
+        backgroundColor: "#f8fafc", // ← match your bg-surface-alt color here
+        position: "relative",
+        overflow: "hidden",
+      }}>
+      {/* Background Blobs */}
+      <Box
+        sx={{
+          position: "absolute",
+          top: 40,
+          right: 40,
+          width: 96,
+          height: 96,
+          backgroundColor: "primary.main",
+          opacity: 0.1,
+          borderRadius: "50%",
+          filter: "blur(50px)",
+          animation: "pulseSlow 4s infinite",
+        }}
+      />
+      <Box
+        sx={{
+          position: "absolute",
+          bottom: 40,
+          left: 80,
+          width: 128,
+          height: 128,
+          backgroundColor: "#60a5fa",
+          opacity: 0.1,
+          borderRadius: "50%",
+          filter: "blur(60px)",
+          animation: "pulseSlower 6s infinite",
+        }}
+      />
 
-      <div className="max-w-7xl mx-auto px-6">
+      <Box sx={{ maxWidth: "1280px", mx: "auto", px: 3 }}>
         {/* Title */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-text-main mb-4 animate-slide-up">
+        <Box
+          sx={{ textAlign: "center", maxWidth: "700px", mx: "auto", mb: 10 }}>
+          <Typography
+            sx={{
+              fontSize: { xs: "2rem", md: "2.4rem" },
+              fontWeight: 700,
+              mb: 2,
+              animation: "slideUp 0.6s ease forwards",
+              color: "text.primary",
+            }}>
             Everything you need to stand out
-          </h2>
-          <p className="text-lg text-text-muted animate-slide-up animation-delay-150">
+          </Typography>
+
+          <Typography
+            sx={{
+              fontSize: "1.125rem",
+              color: "text.secondary",
+              animation: "slideUp 0.8s ease forwards",
+            }}>
             Powerful features designed to help you create a compelling narrative
             for your career journey.
-          </p>
-        </div>
+          </Typography>
+        </Box>
 
-        {/* Feature Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {/* Feature Grid — exact Tailwind behavior */}
+        <Box
+          sx={{
+            display: "grid",
+            gap: 4,
+            gridTemplateColumns: {
+              xs: "1fr",
+              md: "1fr 1fr",
+              lg: "repeat(4, 1fr)",
+            },
+            gridAutoRows: "1fr", // ← makes all rows equal height
+          }}>
           {features.map((feature, index) => (
-            <div
+            <Paper
               key={index}
-              className="relative bg-white p-8 rounded-2xl border border-gray-100 shadow-sm 
-              hover:shadow-xl transition-all duration-300 group 
-              hover:-translate-y-2 hover:rotate-[0.8deg] 
-              cursor-pointer"
-            >
-              {/* shimmer highlight */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/0 via-white/20 to-white/0 opacity-0 group-hover:opacity-100 transition duration-500 pointer-events-none"></div>
+              elevation={0}
+              sx={{
+                height: "100%", // ← stretch to fill each grid row
+                display: "flex",
+                flexDirection: "column",
+                p: 4,
+                borderRadius: 4,
+                backgroundColor: "#ffffff",
+                border: "1px solid #e5e7eb",
+                transition: "0.3s",
+                cursor: "pointer",
+                position: "relative",
+                boxShadow: "0px 2px 12px rgba(0,0,0,0.05)",
+                "&:hover": {
+                  transform: "translateY(-6px) rotate(0.8deg)",
+                  boxShadow: "0px 12px 22px rgba(0,0,0,0.08)",
+                },
+                "&:hover .shimmer": { opacity: 1 },
+              }}>
+              {/* Shimmer */}
+              <Box
+                className="shimmer"
+                sx={{
+                  position: "absolute",
+                  inset: 0,
+                  background:
+                    "linear-gradient(135deg, transparent, rgba(255,255,255,0.2), transparent)",
+                  opacity: 0,
+                  transition: "0.4s",
+                  borderRadius: 4,
+                }}
+              />
 
               {/* Icon */}
-              <div
-                className="w-12 h-12 bg-primary-light text-primary rounded-xl flex items-center justify-center mb-6
-                group-hover:scale-110 group-hover:rotate-3 transition-all duration-300"
-              >
+              <Box
+                sx={{
+                  width: 48,
+                  height: 48,
+                  borderRadius: 3,
+                  backgroundColor: "primary.light",
+                  color: "primary.main",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  mb: 3,
+                }}>
                 {feature.icon}
-              </div>
+              </Box>
 
-              <h3 className="text-xl font-semibold text-text-main mb-3 group-hover:text-primary transition-colors">
+              <Typography
+                sx={{
+                  fontSize: "1.25rem",
+                  fontWeight: 600,
+                  mb: 1.5,
+                  color: "text.primary",
+                }}>
                 {feature.title}
-              </h3>
+              </Typography>
 
-              <p className="text-text-muted leading-relaxed">
+              <Typography sx={{ color: "text.secondary", lineHeight: 1.7 }}>
                 {feature.description}
-              </p>
-            </div>
+              </Typography>
+            </Paper>
           ))}
-        </div>
-      </div>
-    </section>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

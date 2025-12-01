@@ -1,25 +1,69 @@
 import React from "react";
+import { Box, Typography } from "@mui/material";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="relative bg-white border-t border-gray-100 py-10 overflow-hidden">
-      {/* playful floating glow */}
-      <div className="absolute -top-10 right-10 w-40 h-40 bg-primary/10 rounded-full blur-3xl animate-pulse-slow pointer-events-none"></div>
+    <Box
+      component="footer"
+      sx={{
+        position: "relative",
+        backgroundColor: "#ffffff",
+        borderTop: "1px solid #f1f5f9",
+        py: 5,
+        overflow: "hidden",
+      }}>
+      {/* Floating blob */}
+      <Box
+        sx={{
+          position: "absolute",
+          top: -40,
+          right: 40,
+          width: 160,
+          height: 160,
+          backgroundColor: "primary.main",
+          opacity: 0.1,
+          borderRadius: "50%",
+          filter: "blur(60px)",
+          animation: "pulseSlow 4s infinite",
+          pointerEvents: "none",
+        }}
+      />
 
-      <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6 animate-slide-up">
+      <Box
+        sx={{
+          maxWidth: "1280px",
+          mx: "auto",
+          px: 3,
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: 3,
+          animation: "slideUp 0.6s ease both",
+        }}>
         {/* Left Section */}
-        <div className="flex items-center gap-3">
-          <span className="text-xl font-bold text-primary tracking-tight hover:opacity-90 transition-opacity cursor-pointer">
+        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+          <Typography
+            sx={{
+              fontSize: "1.25rem",
+              fontWeight: 700,
+              color: "primary.main",
+              cursor: "pointer",
+              transition: "0.3s",
+              "&:hover": { opacity: 0.85 },
+            }}>
             Kesume
-          </span>
-          <span className="text-gray-300">|</span>
-          <p className="text-sm text-gray-500">
+          </Typography>
+
+          <Typography sx={{ color: "#d1d5db" }}>|</Typography>
+
+          <Typography sx={{ fontSize: "0.875rem", color: "text.secondary" }}>
             &copy; {new Date().getFullYear()} Open Source Project.
-          </p>
-        </div>
+          </Typography>
+        </Box>
 
         {/* Right Section */}
-        <div className="flex gap-6">
+        <Box sx={{ display: "flex", gap: 4 }}>
           {[
             { name: "Privacy", href: "#" },
             { name: "Terms", href: "#" },
@@ -29,22 +73,43 @@ const Footer: React.FC = () => {
               external: true,
             },
           ].map((item) => (
-            <a
-              key={item.name}
-              href={item.href}
-              target={item?.external ? "_blank" : undefined}
-              rel={item?.external ? "noopener noreferrer" : undefined}
-              className="relative text-sm text-gray-500 hover:text-primary transition-all group"
-            >
-              {item.name}
+            <Box key={item.name} sx={{ position: "relative" }}>
+              <Box
+                component="a"
+                href={item.href}
+                target={item.external ? "_blank" : undefined}
+                rel={item.external ? "noopener noreferrer" : undefined}
+                sx={{
+                  fontSize: "0.875rem",
+                  color: "text.secondary",
+                  textDecoration: "none",
+                  transition: "0.3s",
+                  cursor: "pointer",
+                  "&:hover": { color: "primary.main" },
+                  "&:hover .underline": { width: "100%" },
+                }}>
+                {item.name}
+              </Box>
 
-              {/* animated underline */}
-              <span className="absolute left-0 bottom-[-2px] w-0 h-[2px] bg-primary rounded-full group-hover:w-full transition-all duration-300"></span>
-            </a>
+              {/* Animated underline */}
+              <Box
+                className="underline"
+                sx={{
+                  position: "absolute",
+                  left: 0,
+                  bottom: -2,
+                  height: 2,
+                  width: 0,
+                  borderRadius: 2,
+                  backgroundColor: "primary.main",
+                  transition: "0.3s",
+                }}
+              />
+            </Box>
           ))}
-        </div>
-      </div>
-    </footer>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

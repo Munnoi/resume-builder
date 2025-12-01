@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useEffect, useRef } from "react";
+import { Box, Button, Typography, Grid, Paper } from "@mui/material";
 
 const Hero: React.FC = () => {
   const cardRef = useRef<HTMLDivElement | null>(null);
@@ -33,115 +34,385 @@ const Hero: React.FC = () => {
   }, []);
 
   return (
-    <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-surface">
+    <Box
+      component="section"
+      sx={{
+        position: "relative",
+        pt: { xs: 8, lg: 12 },
+        pb: { xs: 10, lg: 16 },
+        overflow: "hidden",
+        backgroundColor: "background.default",
+        textAlign: "center",
+      }}>
       {/* Floating playful shapes */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-10 h-10 bg-primary/20 rounded-xl animate-bounce-slow opacity-80"></div>
-        <div className="absolute bottom-32 right-20 w-8 h-8 bg-blue-400/20 rounded-full animate-spin-slow"></div>
-        <div className="absolute top-1/3 right-1/4 w-12 h-12 bg-purple-400/20 rounded-full animate-bounce-delayed"></div>
-      </div>
+      <Box sx={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: 80,
+            left: 40,
+            width: 40,
+            height: 40,
+            backgroundColor: "primary.main",
+            opacity: 0.2,
+            borderRadius: 3,
+            animation: "bounceSlow 4s infinite",
+          }}
+        />
+        <Box
+          sx={{
+            position: "absolute",
+            bottom: 130,
+            right: 80,
+            width: 32,
+            height: 32,
+            backgroundColor: "info.light",
+            opacity: 0.2,
+            borderRadius: "50%",
+            animation: "spinSlow 6s linear infinite",
+          }}
+        />
+        <Box
+          sx={{
+            position: "absolute",
+            top: "33%",
+            right: "25%",
+            width: 48,
+            height: 48,
+            backgroundColor: "secondary.light",
+            opacity: 0.2,
+            borderRadius: "50%",
+            animation: "bounceDelayed 5s infinite",
+          }}
+        />
+      </Box>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
+      {/* Content wrapper */}
+      <Box
+        sx={{
+          position: "relative",
+          zIndex: 10,
+          maxWidth: "1200px",
+          mx: "auto",
+          px: 3,
+        }}>
         {/* Hero Title */}
-        <h1 className="text-5xl md:text-7xl font-bold text-text-main tracking-tight mb-6 leading-tight animate-slide-up">
+        <Typography
+          variant="h2"
+          sx={{
+            fontWeight: 800,
+            mb: 3,
+            lineHeight: 1.1,
+            animation: "slideUp 0.8s ease forwards",
+            fontSize: { xs: "2.5rem", md: "4rem" },
+          }}>
           Get dream jobs with our <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-600 animate-gradient-flow">
+          <Box
+            component="span"
+            sx={{
+              background: "linear-gradient(to right, #3b82f6, #2563eb)",
+              backgroundClip: "text",
+              textFillColor: "transparent",
+              animation: "gradientFlow 3s ease infinite",
+            }}>
             AI Powered
-          </span>{" "}
+          </Box>{" "}
           resume builder
-        </h1>
+        </Typography>
 
-        <p className="text-xl text-text-muted max-w-2xl mx-auto mb-10 leading-relaxed animate-slide-up animation-delay-150">
+        {/* Subtitle */}
+        <Typography
+          sx={{
+            fontSize: "1.25rem",
+            maxWidth: 600,
+            mx: "auto",
+            mb: 4,
+            color: "text.secondary",
+            lineHeight: 1.6,
+            animation: "slideUp 0.9s ease forwards",
+          }}>
           Build a professional and outstanding resume with our free builder and
           templates.
-        </p>
+        </Typography>
 
         {/* Buttons */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-slide-up animation-delay-300">
-          <Link
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 2,
+            animation: "slideUp 1s ease forwards",
+          }}>
+          <Button
+            component={Link}
             to="/builder"
-            className="w-full sm:w-auto px-8 py-4 bg-primary text-white rounded-xl font-semibold text-lg relative overflow-hidden
-            hover:scale-105 active:scale-95 transition-all shadow-xl shadow-primary/20 group"
-          >
-            <span className="relative z-10">Create my resume</span>
-            <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-          </Link>
+            sx={{
+              px: 4,
+              py: 1.5,
+              backgroundColor: "primary.main",
+              color: "#fff",
+              fontSize: "1.1rem",
+              fontWeight: 600,
+              borderRadius: 2,
+              transition: "0.3s",
+              "&:hover": {
+                transform: "scale(1.05)",
+                backgroundColor: "primary.dark",
+              },
+              "&:active": { transform: "scale(0.95)" },
+            }}>
+            Create my resume
+          </Button>
 
-          <Link
+          <Button
+            component={Link}
             to="/builder"
-            className="w-full sm:w-auto px-8 py-4 bg-white text-primary border border-gray-200 rounded-xl font-semibold text-lg 
-            hover:bg-gray-50 hover:scale-105 active:scale-95 transition-all"
-          >
+            variant="outlined"
+            sx={{
+              px: 4,
+              py: 1.5,
+              fontSize: "1.1rem",
+              fontWeight: 600,
+              borderRadius: 2,
+              color: "primary.main",
+              borderColor: "#ccc",
+              backgroundColor: "#fff",
+              "&:hover": {
+                backgroundColor: "#f5f5f5",
+                transform: "scale(1.05)",
+              },
+              "&:active": { transform: "scale(0.95)" },
+            }}>
             Improve resume
-          </Link>
-        </div>
+          </Button>
+        </Box>
 
         {/* Resume Preview Card */}
-        <div className="mt-20 max-w-4xl mx-auto perspective-1000 animate-slide-up animation-delay-450">
-          <div
+        <Box
+          sx={{
+            mt: 10,
+            maxWidth: "900px",
+            mx: "auto",
+            perspective: "1000px",
+            animation: "slideUp 1.2s ease forwards",
+          }}>
+          <Paper
             ref={cardRef}
-            className="relative rounded-2xl bg-white/90 backdrop-blur-lg shadow-2xl border border-gray-200 overflow-hidden 
-            transition-all duration-300 group"
-          >
+            elevation={12}
+            sx={{
+              position: "relative",
+              borderRadius: 4,
+              backgroundColor: "rgba(255,255,255,0.9)",
+              backdropFilter: "blur(12px)",
+              border: "1px solid #e5e7eb",
+              overflow: "hidden",
+              transition: "0.3s",
+            }}>
             {/* Shimmer overlay */}
-            <div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent 
-              opacity-0 group-hover:opacity-100 animate-shimmer pointer-events-none"
-            ></div>
+            <Box
+              sx={{
+                position: "absolute",
+                inset: 0,
+                background:
+                  "linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent)",
+                opacity: 0,
+                pointerEvents: "none",
+                animation: "shimmer 2s infinite",
+                "&:hover": { opacity: 1 },
+              }}
+            />
 
-            {/* Fake Browser Header */}
-            <div className="bg-gray-50 border-b border-gray-200 px-4 py-3 flex items-center gap-2">
-              <div className="flex gap-1.5 opacity-70">
-                <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                <div className="w-3 h-3 rounded-full bg-green-400"></div>
-              </div>
+            {/* Fake browser header */}
+            <Box
+              sx={{
+                backgroundColor: "#f9fafb",
+                borderBottom: "1px solid #e5e7eb",
+                px: 3,
+                py: 1.5,
+                display: "flex",
+                alignItems: "center",
+                gap: 1.5,
+              }}>
+              <Box sx={{ display: "flex", gap: 1, opacity: 0.7 }}>
+                <Box
+                  sx={{
+                    width: 12,
+                    height: 12,
+                    borderRadius: "50%",
+                    backgroundColor: "#f87171",
+                  }}
+                />
+                <Box
+                  sx={{
+                    width: 12,
+                    height: 12,
+                    borderRadius: "50%",
+                    backgroundColor: "#facc15",
+                  }}
+                />
+                <Box
+                  sx={{
+                    width: 12,
+                    height: 12,
+                    borderRadius: "50%",
+                    backgroundColor: "#4ade80",
+                  }}
+                />
+              </Box>
 
-              <div className="mx-auto bg-white px-3 py-1 rounded-md text-xs text-gray-400 border border-gray-200 w-1/2 text-center">
+              <Box
+                sx={{
+                  mx: "auto",
+                  px: 1.5,
+                  py: 0.5,
+                  backgroundColor: "#fff",
+                  borderRadius: 1,
+                  fontSize: "0.7rem",
+                  border: "1px solid #e5e7eb",
+                  color: "#9ca3af",
+                  width: "50%",
+                  textAlign: "center",
+                }}>
                 kesume.com/builder
-              </div>
-            </div>
+              </Box>
+            </Box>
 
             {/* Resume Content */}
-            <div className="p-8 md:p-12 text-left bg-white min-h-[400px] flex flex-col gap-6 opacity-95 transition-opacity">
-              {/* Header */}
-              <div className="border-b border-gray-100 pb-6">
-                <div className="h-8 w-1/3 bg-gray-800 rounded"></div>
-                <div className="h-4 w-1/4 bg-primary/60 rounded mt-3"></div>
-              </div>
+            <Box
+              sx={{
+                p: { xs: 3, md: 6 },
+                backgroundColor: "#fff",
+                minHeight: 400,
+              }}>
+              <Box sx={{ borderBottom: "1px solid #f1f5f9", pb: 3 }}>
+                <Box
+                  sx={{
+                    height: 32,
+                    width: "33%",
+                    backgroundColor: "#1f2937",
+                    borderRadius: 1,
+                  }}
+                />
+                <Box
+                  sx={{
+                    height: 16,
+                    width: "25%",
+                    mt: 2,
+                    backgroundColor: "primary.light",
+                    borderRadius: 1,
+                  }}
+                />
+              </Box>
 
-              {/* Body */}
-              <div className="grid grid-cols-3 gap-8 h-full">
-                <div className="col-span-2 space-y-6">
-                  <div className="space-y-3">
-                    <div className="h-5 w-1/4 bg-gray-200 rounded"></div>
-                    <div className="h-3 w-full bg-gray-100 rounded"></div>
-                    <div className="h-3 w-5/6 bg-gray-100 rounded"></div>
-                    <div className="h-3 w-4/5 bg-gray-100 rounded"></div>
-                  </div>
+              <Grid container spacing={3} mt={3}>
+                <Grid item xs={12} md={8}>
+                  <Box
+                    sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+                    {/* Section 1 */}
+                    <Box>
+                      <Box
+                        sx={{
+                          height: 20,
+                          width: "25%",
+                          bgcolor: "#e5e7eb",
+                          borderRadius: 1,
+                        }}
+                      />
+                      <Box
+                        sx={{
+                          height: 12,
+                          bgcolor: "#f3f4f6",
+                          mt: 1,
+                          borderRadius: 1,
+                        }}
+                      />
+                      <Box
+                        sx={{
+                          height: 12,
+                          width: "85%",
+                          bgcolor: "#f3f4f6",
+                          mt: 1,
+                          borderRadius: 1,
+                        }}
+                      />
+                    </Box>
 
-                  <div className="space-y-3">
-                    <div className="h-5 w-1/4 bg-gray-200 rounded"></div>
-                    <div className="h-3 w-full bg-gray-100 rounded"></div>
-                    <div className="h-3 w-5/6 bg-gray-100 rounded"></div>
-                  </div>
-                </div>
+                    {/* Section 2 */}
+                    <Box>
+                      <Box
+                        sx={{
+                          height: 20,
+                          width: "25%",
+                          bgcolor: "#e5e7eb",
+                          borderRadius: 1,
+                        }}
+                      />
+                      <Box
+                        sx={{
+                          height: 12,
+                          bgcolor: "#f3f4f6",
+                          mt: 1,
+                          borderRadius: 1,
+                        }}
+                      />
+                      <Box
+                        sx={{
+                          height: 12,
+                          width: "85%",
+                          bgcolor: "#f3f4f6",
+                          mt: 1,
+                          borderRadius: 1,
+                        }}
+                      />
+                    </Box>
+                  </Box>
+                </Grid>
 
-                <div className="col-span-1 space-y-6">
-                  <div className="h-32 w-full bg-blue-50 rounded-lg border border-blue-100"></div>
-                  <div className="space-y-2">
-                    <div className="h-4 w-1/2 bg-gray-200 rounded"></div>
-                    <div className="h-2 w-full bg-gray-100 rounded"></div>
-                    <div className="h-2 w-full bg-gray-100 rounded"></div>
-                    <div className="h-2 w-3/4 bg-gray-100 rounded"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+                {/* Sidebar */}
+                <Grid item xs={12} md={4}>
+                  <Box
+                    sx={{
+                      height: 120,
+                      bgcolor: "#eff6ff",
+                      borderRadius: 2,
+                      border: "1px solid #dbeafe",
+                    }}
+                  />
+                  <Box
+                    mt={2}
+                    sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+                    <Box
+                      sx={{
+                        height: 16,
+                        width: "50%",
+                        bgcolor: "#e5e7eb",
+                        borderRadius: 1,
+                      }}
+                    />
+                    <Box
+                      sx={{ height: 10, bgcolor: "#f3f4f6", borderRadius: 1 }}
+                    />
+                    <Box
+                      sx={{ height: 10, bgcolor: "#f3f4f6", borderRadius: 1 }}
+                    />
+                    <Box
+                      sx={{
+                        height: 10,
+                        width: "75%",
+                        bgcolor: "#f3f4f6",
+                        borderRadius: 1,
+                      }}
+                    />
+                  </Box>
+                </Grid>
+              </Grid>
+            </Box>
+          </Paper>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

@@ -1,8 +1,34 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  Typography,
+  IconButton,
+  Button,
+  Divider,
+  useScrollTrigger,
+  Menu,
+  MenuItem,
+  Avatar,
+} from "@mui/material";
+import AuthModal from "./AuthModal";
+import { logout } from "../services/api";
 
 const NavBar: React.FC = () => {
-  const [scrolled, setScrolled] = useState<boolean>(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [authOpen, setAuthOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+       // Ideally verify token with backend, for now assume logged in
+       setUser({ name: "User" }); 
+    }
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -10,79 +36,212 @@ const NavBar: React.FC = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const navItems = [
+    { name: "Home", path: "/" },
+    { name: "Templates", path: "/templates" },
+    { name: "Features", path: "/#features" },
+    { name: "Pricing", path: "/#pricing" },
+    { name: "FAQ", path: "/#faq" },
+    { name: "Builder", path: "/builder" },
+  ];
+
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? "bg-white/70 backdrop-blur-xl border-b border-white/20 shadow-sm py-3"
-          : "bg-transparent py-6"
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-6 flex justify-between items-center relative">
+    <AppBar
+      position="fixed"
+      elevation={scrolled ? 1 : 0}
+      sx={{
+        px: 0,
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 50,
+        transition: "0.4s",
+        backgroundColor: scrolled ? "rgba(255,255,255,0.7)" : "transparent",
+        backdropFilter: scrolled ? "blur(20px)" : "none",
+        borderBottom: scrolled ? "1px solid rgba(255,255,255,0.25)" : "none",
+        py: scrolled ? 0.8 : 2,
+      }}>
+      <Toolbar
+        sx={{
+          maxWidth: "1280px",
+          mx: "auto",
+          width: "100%",
+          px: 3,
+          display: "flex",
+          justifyContent: "space-between",
+          position: "relative",
+        }}>
         {/* Logo */}
-        <Link
+        <Box
+          component={Link}
           to="/"
-          className="flex items-center gap-2 group hover:scale-[1.03] transition-transform"
-        >
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-primary/20 group-hover:shadow-primary/40 transition-all">
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+            textDecoration: "none",
+            transition: "0.3s",
+            "&:hover": { transform: "scale(1.03)" },
+          }}>
+          <Box
+            sx={{
+              width: 32,
+              height: 32,
+              backgroundColor: "primary.main",
+              borderRadius: 2,
+              fontWeight: 700,
+              fontSize: "1.2rem",
+              color: "#fff",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              boxShadow: (theme) =>
+                `0px 6px 15px ${theme.palette.primary.main + "33"}`,
+            }}>
             K
-          </div>
-          <span className="text-xl font-bold text-text-main tracking-tight group-hover:text-primary transition-colors">
+          </Box>
+
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: 700,
+              color: "text.primary",
+              textDecoration: "none",
+              transition: "0.3s",
+              "&:hover": { color: "primary.main" },
+            }}>
             Kesume
-          </span>
-        </Link>
+          </Typography>
+        </Box>
 
-        {/* Center Navigation */}
-        <div className="hidden md:block absolute left-1/2 -translate-x-1/2">
-          <ul className="flex items-center gap-1 bg-white/50 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20 shadow-sm">
-            {[
-              { name: "Home", path: "/" },
-              { name: "Templates", path: "/templates" },
-              { name: "Features", path: "/#features" },
-              { name: "Pricing", path: "/#pricing" },
-              { name: "FAQ", path: "/#faq" },
-              { name: "Builder", path: "/builder" },
-            ].map((item) => (
-              <li key={item.name} className="relative group">
+        {/* Center Nav Menu */}
+        <Box
+          sx={{
+            position: "absolute",
+            left: "50%",
+            transform: "translateX(-50%)",
+            display: { xs: "none", md: "flex" },
+          }}>
+          <Box
+            sx={{
+              display: "flex",
+              gap: 1,
+              px: 2,
+              py: 1,
+              backgroundColor: "rgba(255,255,255,0.5)",
+              border: "1px solid rgba(255,255,255,0.24)",
+              borderRadius: 100,
+              backdropFilter: "blur(14px)",
+              boxShadow: "0px 2px 10px rgba(0,0,0,0.05)",
+            }}>
+            {navItems.map((item) => (
+              <Box key={item.name} sx={{ position: "relative" }}>
                 {item.path.startsWith("/#") ? (
-                  <a
+                  <Box
+                    component="a"
                     href={item.path}
-                    className="px-4 py-2 text-sm font-medium text-text-muted transition-all duration-300 rounded-full hover:bg-white/80 hover:text-primary relative"
-                  >
+                    sx={{
+                      px: 2,
+                      py: 1,
+                      fontSize: "0.9rem",
+                      fontWeight: 500,
+                      borderRadius: "50px",
+                      color: "text.secondary",
+                      textDecoration: "none",
+                      transition: "0.3s",
+                      "&:hover": {
+                        backgroundColor: "rgba(255,255,255,0.75)",
+                        color: "primary.main",
+                      },
+                      "&:hover .underline": {
+                        width: "60%",
+                      },
+                    }}>
                     {item.name}
 
-                    {/* Animated underline */}
-                    <span className="absolute left-1/2 -bottom-0.5 w-0 group-hover:w-2/3 h-[2px] bg-primary rounded-full transition-all duration-300 -translate-x-1/2"></span>
-                  </a>
+                    {/* Underline */}
+                    <Box
+                      className="underline"
+                      sx={{
+                        position: "absolute",
+                        left: "50%",
+                        bottom: 0,
+                        height: 2,
+                        width: 0,
+                        borderRadius: 10,
+                        backgroundColor: "primary.main",
+                        transition: "0.3s",
+                        transform: "translateX(-50%)",
+                      }}
+                    />
+                  </Box>
                 ) : (
-                  <Link
+                  <Box
+                    component={Link}
                     to={item.path}
-                    className="px-4 py-2 text-sm font-medium text-text-muted transition-all duration-300 rounded-full hover:bg-white/80 hover:text-primary relative"
-                  >
+                    sx={{
+                      px: 2,
+                      py: 1,
+                      fontSize: "0.9rem",
+                      fontWeight: 500,
+                      borderRadius: "50px",
+                      color: "text.secondary",
+                      textDecoration: "none",
+                      transition: "0.3s",
+                      "&:hover": {
+                        backgroundColor: "rgba(255,255,255,0.75)",
+                        color: "primary.main",
+                      },
+                      "&:hover .underline": {
+                        width: "60%",
+                      },
+                    }}>
                     {item.name}
-                    <span className="absolute left-1/2 -bottom-0.5 w-0 group-hover:w-2/3 h-[2px] bg-primary rounded-full transition-all duration-300 -translate-x-1/2"></span>
-                  </Link>
+                    <Box
+                      className="underline"
+                      sx={{
+                        position: "absolute",
+                        left: "50%",
+                        bottom: 0,
+                        height: 2,
+                        width: 0,
+                        borderRadius: 10,
+                        backgroundColor: "primary.main",
+                        transition: "0.3s",
+                        transform: "translateX(-50%)",
+                      }}
+                    />
+                  </Box>
                 )}
-              </li>
+              </Box>
             ))}
-          </ul>
-        </div>
+          </Box>
+        </Box>
 
         {/* Right Side */}
-        <div className="flex items-center gap-4">
+        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           {/* GitHub */}
-          <a
+          <Box
+            component="a"
             href="https://github.com/Munnoi/resume-builder"
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden lg:flex items-center gap-2 text-sm font-medium text-text-muted hover:text-primary transition-colors hover:scale-[1.05] active:scale-[0.97]"
-          >
-            <svg
-              className="w-5 h-5"
-              fill="currentColor"
+            sx={{
+              display: { xs: "none", lg: "flex" },
+              alignItems: "center",
+              gap: 1,
+              color: "text.secondary",
+              fontSize: "0.9rem",
+              textDecoration: "none",
+              transition: "0.3s",
+              "&:hover": { color: "primary.main", transform: "scale(1.05)" },
+              "&:active": { transform: "scale(0.97)" },
+            }}>
+            <Box
+              component="svg"
+              xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
+              sx={{ width: 20, height: 20, fill: "currentColor" }}>
               <path
                 fillRule="evenodd"
                 clipRule="evenodd"
@@ -114,30 +273,86 @@ const NavBar: React.FC = () => {
       C22 6.484 17.522 2 12 2z
     "
               />
-            </svg>
+            </Box>
+            Star
+          </Box>
 
-            <span>Star</span>
-          </a>
+          <Divider
+            orientation="vertical"
+            sx={{
+              height: 24,
+              display: { xs: "none", lg: "block" },
+              backgroundColor: "#e5e7eb",
+            }}
+          />
 
-          <div className="h-6 w-px bg-gray-200 hidden lg:block"></div>
-
-          {/* Login */}
-          <button className="hidden md:block text-sm font-medium text-text-muted hover:text-primary transition-all hover:scale-[1.05] active:scale-[0.97]">
-            Log in
-          </button>
+          {/* Login / User Menu */}
+          {user ? (
+            <>
+              <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
+                <Avatar sx={{ bgcolor: "primary.main" }}>{user.name?.[0] || "U"}</Avatar>
+              </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={() => setAnchorEl(null)}
+              >
+                <MenuItem onClick={() => {
+                  logout();
+                  setUser(null);
+                  setAnchorEl(null);
+                }}>Logout</MenuItem>
+              </Menu>
+            </>
+          ) : (
+            <Button
+              onClick={() => setAuthOpen(true)}
+              sx={{
+                display: { xs: "none", md: "block" },
+                textTransform: "none",
+                color: "text.secondary",
+                fontWeight: 500,
+                "&:hover": { color: "primary.main", transform: "scale(1.05)" },
+                "&:active": { transform: "scale(0.97)" },
+              }}>
+              Log in
+            </Button>
+          )}
+          
+          <AuthModal 
+            open={authOpen} 
+            onClose={() => setAuthOpen(false)} 
+            onLoginSuccess={(u) => setUser(u)} 
+          />
 
           {/* CTA */}
-          <Link
+          <Button
+            component={Link}
             to="/builder"
-            className="px-5 py-2.5 bg-primary text-white rounded-full text-sm font-medium 
-            hover:bg-primary-hover transition-all shadow-lg shadow-primary/25 hover:shadow-primary/40 
-            hover:-translate-y-0.5 active:scale-95"
-          >
+            sx={{
+              px: 3,
+              py: 1,
+              backgroundColor: "primary.main",
+              color: "#fff",
+              fontSize: "0.9rem",
+              fontWeight: 600,
+              borderRadius: "50px",
+              boxShadow: (theme) =>
+                `0px 6px 16px ${theme.palette.primary.main + "40"}`,
+              transition: "0.3s",
+              "&:hover": {
+                backgroundColor: "primary.dark",
+                transform: "translateY(-2px)",
+                boxShadow: (theme) =>
+                  `0px 8px 20px ${theme.palette.primary.main + "60"}`,
+              },
+              "&:active": { transform: "scale(0.95)" },
+            }}>
             Get Started
-          </Link>
-        </div>
-      </div>
-    </nav>
+          </Button>
+        </Box>
+      </Toolbar>
+    </AppBar>
   );
 };
 
