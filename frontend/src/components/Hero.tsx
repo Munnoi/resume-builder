@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useEffect, useRef } from "react";
-import { Box, Button, Typography, Grid, Paper } from "@mui/material";
+import { Box, Button, Typography, Paper } from "@mui/material";
 
 const Hero: React.FC = () => {
   const cardRef = useRef<HTMLDivElement | null>(null);
@@ -38,7 +38,7 @@ const Hero: React.FC = () => {
       component="section"
       sx={{
         position: "relative",
-        pt: { xs: 8, lg: 12 },
+        pt: { xs: 14, lg: 24 },
         pb: { xs: 10, lg: 16 },
         overflow: "hidden",
         backgroundColor: "background.default",
@@ -306,8 +306,15 @@ const Hero: React.FC = () => {
                 />
               </Box>
 
-              <Grid container spacing={3} mt={3}>
-                <Grid item xs={12} md={8}>
+              <Box
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: { xs: "1fr", md: "2fr 1fr" },
+                  gap: 3,
+                  mt: 3,
+                }}
+              >
+                <Box>
                   <Box
                     sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
                     {/* Section 1 */}
@@ -368,10 +375,10 @@ const Hero: React.FC = () => {
                       />
                     </Box>
                   </Box>
-                </Grid>
+                </Box>
 
                 {/* Sidebar */}
-                <Grid item xs={12} md={4}>
+                <Box>
                   <Box
                     sx={{
                       height: 120,
@@ -406,8 +413,8 @@ const Hero: React.FC = () => {
                       }}
                     />
                   </Box>
-                </Grid>
-              </Grid>
+                </Box>
+              </Box>
             </Box>
           </Paper>
         </Box>
