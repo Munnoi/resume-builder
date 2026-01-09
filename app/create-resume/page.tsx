@@ -1,8 +1,13 @@
-import React from 'react'
+"use client"
+
+import { usePathname } from "next/navigation";
 
 const ParseResumePage = () => {
+  const path = usePathname();
   return (
-    <div>ParseResumePage</div>
+    <div>
+      path {path}
+    </div>
   )
 }
 

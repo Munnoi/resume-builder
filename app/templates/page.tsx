@@ -1,63 +1,55 @@
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge"; 
+import { Badge } from "@/components/ui/badge";
 import { IconFilter, IconArrowRight, IconCheck } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
 
-// 1. Separate data 
 const TEMPLATES = [
   {
-    id: "fox-resume",
-    title: "Fox Resume",
-    description: "A sleek, nature-inspired design focusing on agility.",
-    imageSrc: "/Fox.png",
-    tags: ["Nature", "Creative", "Modern"],
+    id: "modern",
+    title: "Modern Premium",
+    description:
+      "A sleek, dark-themed sidebar design focusing on agility and clean typography.",
+    imageSrc: "/Fox.png", // Keeping placeholders for now, user can update later
+    tags: ["Modern", "Dark Sidebar", "Clean"],
   },
   {
-    id: "vixen-resume",
-    title: "Vixen Resume",
-    description: "Elegant and poised, perfect for executive roles.",
+    id: "professional",
+    title: "Professional",
+    description:
+      "Elegant, top-down classic layout perfect for corporate and executive roles.",
     imageSrc: "/Female-Fox.png",
-    tags: ["Elegant", "Clean", "Minimalist"],
+    tags: ["Classic", "Corporate", "Minimalist"],
   },
   {
-    id: "feline-resume",
-    title: "Feline Resume",
-    description: "Sharp and focused layout for technical roles.",
+    id: "creative",
+    title: "Creative",
+    description:
+      "Unique layout with accent headers and dynamic spacing for creative professionals.",
     imageSrc: "/Cat.png",
-    tags: ["Tech", "Sharp", "Monotonic"],
-  },
-  {
-    id: "canine-resume",
-    title: "Canine Resume",
-    description: "Loyal and structured format for traditional industries.",
-    imageSrc: "/Dog.png",
-    tags: ["Professional", "Structured", "Bold"],
+    tags: ["Creative", "Unique", "Bold"],
   },
 ];
 
 const TemplatesResumePage = () => {
   return (
-    // Removed 'absolute'. Used 'pt-24' to clear fixed navbars while maintaining document flow.
-    <div className="min-h-screen w-full bg-background pt-24 pb-10 px-6 md:px-10">
+    <div className="bg-background min-h-screen w-full px-6 pt-24 pb-10 md:px-10">
       <div className="mx-auto max-w-7xl space-y-8">
-        
         {/* Header Section */}
         <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight text-foreground">
-              Choose a Template
+            <h1 className="text-foreground text-3xl font-bold tracking-tight">
+              Choose a Premium Template
             </h1>
-            <p className="mt-1 text-muted-foreground">
-              Select a design to get started with your resume in minutes.
+            <p className="text-muted-foreground mt-1">
+              Select a professional design to stand out from the crowd.
             </p>
           </div>
 
@@ -68,7 +60,7 @@ const TemplatesResumePage = () => {
         </div>
 
         {/* Grid Layout */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
           {TEMPLATES.map((template) => (
             <CardTemplate key={template.id} {...template} />
           ))}
@@ -92,46 +84,49 @@ function CardTemplate({
   tags: string[];
 }) {
   return (
-    <Card className="group relative flex flex-col justify-between overflow-hidden border-muted transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-      
-      {/* Image Container - Changed to A4 Aspect Ratio for Resumes */}
-      <div className="relative aspect-3/4 w-full overflow-hidden bg-muted/50">
+    <Card className="group border-muted relative flex max-h-150 flex-col justify-between overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+      {/* Image Container */}
+      <div className="bg-muted/50 relative aspect-[1/1.41] w-full overflow-hidden">
         <Image
           src={imageSrc}
           alt={title}
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
-        
+
         {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-black/60 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-        
+        <div className="absolute inset-0 bg-black/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
         {/* Action Button Centered in Overlay */}
         <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-            {/* Using 'asChild' is the Shadcn standard way to merge Button and Link. 
-              This prevents the invalid HTML of <button> inside <a>.
-            */}
-          <Link href={`/templates/${id}`} className="text-white">
-            <IconCheck/>
-            <span>Select</span>
+          <Link
+            href={`/create-resume/${id}`}
+            className="flex items-center gap-2 rounded-full bg-white/20 px-6 py-2 font-semibold text-black transition-transform hover:scale-105"
+          >
+            <IconCheck size={18} />
+            <span>Select Template</span>
           </Link>
         </div>
       </div>
 
-      <CardHeader className="p-4 pb-2">
+      <CardHeader className="p-2">
         <CardTitle className="flex items-center justify-between text-lg">
           {title}
-          <IconArrowRight className="h-4 w-4 text-primary opacity-0 transition-all duration-300 -translate-x-2 group-hover:translate-x-0 group-hover:opacity-100" />
+          <IconArrowRight className="text-primary h-4 w-4 -translate-x-2 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
         </CardTitle>
         <CardDescription className="mt-1 line-clamp-2 text-sm">
           {description}
         </CardDescription>
       </CardHeader>
 
-      <CardFooter className="p-4">
+      <CardFooter className="p-2">
         <div className="flex flex-wrap gap-2">
           {tags.map((tag) => (
-            <Badge key={tag} variant="secondary" className="font-medium text-xs">
+            <Badge
+              key={tag}
+              variant="secondary"
+              className="text-xs font-medium"
+            >
               {tag}
             </Badge>
           ))}
